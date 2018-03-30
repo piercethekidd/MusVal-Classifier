@@ -1,0 +1,8 @@
+Classifying Musical Valence Using Spotify Audio Features
+
+Edited March 31, 2018 12:05 AM
+- Clean lyrics from stopwords, punctuations, whitespaces, and make the letters lowercase
+- Create model/csv file that compiles all features of a track
+- Apply Multinomial Naive Bayes using only Valence as feature
+- Apply Multinomial Naive Bayes using all Spotify Audio Features as features and check which is more appropriate to use
+- Apply SVM to either Valence or ALL AUDIO FEATURES

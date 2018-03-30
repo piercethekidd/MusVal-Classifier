@@ -1,0 +1,16 @@
+{% if song_list %}
+	<ul>
+		{% for song in song_list %}
+			<p>{{song.rank}}. {{song.title}} - {{song.artist}} ({{song.year}})</p>
+			<p>&ensp;&ensp;&ensp;Acousticness: {{song.songfeature_set.all.first.acousticness}}</p>
+			<p>&ensp;&ensp;&ensp;Danceability: {{song.songfeature_set.all.first.danceability}}</p>
+			<p>&ensp;&ensp;&ensp;Energy: {{song.songfeature_set.all.first.energy}}</p>
+			<p>&ensp;&ensp;&ensp;Instrumentalness: {{song.songfeature_set.all.first.instrumentalness}}</p>
+			<p>&ensp;&ensp;&ensp;Loudness: {{song.songfeature_set.all.first.loudness}}</p>
+			<p>&ensp;&ensp;&ensp;Tempo: {{song.songfeature_set.all.first.tempo}}</p>
+			<p>&ensp;&ensp;&ensp;Valence: {{song.songfeature_set.all.first.valence}}</p>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>No songs can be found.</p>
+{% endif %}

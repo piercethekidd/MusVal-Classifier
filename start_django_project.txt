@@ -1,0 +1,125 @@
+For Linux:
+
+-Check if you have the latest version of Python (Python3)
+-Install pip (pip3 for python3):
+	sudo apt-get install python3-pip
+-Install virtualenvp using pip:
+	pip3 install virtualenv
+-Create directory where you want to create your virtual environment:
+	virtualenv -p python3 <directory_name>
+-Go to directory and activate/deactivate virtualenv by using:
+	source bin/activate
+	deactivate
+-Install Django from virtualenv
+	pip3 install django==2.0
+-Install PostgreSQL by running:
+	sudo apt-get install postgresql postgresql-contrib
+-Switch to postgres and connect to psql. Then, change password to postgres.
+	sudo su
+	su - postgres
+	psql
+	\password
+	<Then type new password>
+-Install postgres adapter for Django
+	pip3 install psycopg2
+-Make src directory in root folder of virtualenv where you will put the django project
+	cd src
+	django-admin startproject <project_name> .
+-Go to project directory and run server:
+	python manage.py runserver
+
+CONGRATULATIONS YOU HAVE NOW FINISHED SETUP!
+
+Other Essential Stuff:
+
+Install python-extensions for some helpful tools
+ (e.g. RunScript - lets you run scripts in a Django context)
+ Source: http://django-extensions.readthedocs.io/en/latest/index.html
+
+ 	pip install django-extensions
+ 	#in INSTALLED_APPS in settings.py insert:
+ 	'django_extensions',	
+
+To run a script	
+
+	-Create scripts folder in root directory
+	-Create __init__.py inside scripts
+	-Put script inside scripts
+	-Write scripts with the 'run' function # this is required
+	-To run: python manage.py runscript <script_name>
+
+To setup database:
+	-Edit settings.py of settings module of project
+	-Under DATABASES variable, type
+		'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sample_db',
+        'USER': 'postgres',
+        'PASSWORD': 'rootroot',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    -Setup postgresql:
+    	psql -U postgres -h localhost
+    	create database <database_name>
+    	\c <database_name> #connects to database
+    	\q <quit>
+
+To create app:
+	-On root folder type, python manage.py startapp <app_name>
+	-Create views by using views.py
+	-Create URLConf by creating urls.py in app folder
+	-Connect URLConf to root URL Settings in settings folder -- urls.py
+	from django.urls import path, include 
+
+	path('<url>', include('<app_name>.urls'))
+
+To create and activate models:
+	-modify models.py of app folder
+	-modify settings.py of settings  folder
+	-Under INSTALLED_APPS variable, insert:
+		'<app_name>.apps.<configClassName>',
+	-Run:
+		python manage.py makemigrations <app_name>
+		python manage.py migrate
+	This is to reflect the changes to the database based on the models
+
+More about models:
+	-The save() function saves the object into the database
+	-Defining a function __str__ with parameter (self) is essential for naming database objects
+	-The delete() function removes the object from the database
+	-To select from database - <Model>.objects.get(<parameter>) e.g. Question.objects.get(pk=1) # pk is primary key
+	-The objects.filter() function selects objects from the database based on a parameter
+
+	For more about the Django Database API: http://devdocs.io/django~2.0/topics/db/queries # Using devdocs.io
+
+Dealing with URLS:
+	-An angle bracket in the path means that the object will be sent as parameter to the view function
+		e.g. "<int:question_id>/ratbu" 
+		The <int: part describes which pattern it will recognize
+		The :question_id> is the object being sent in the request
+
+Dealing with views (Using Templates):
+
+	-Create folder "templates" in app directory and create "<app>" directory within that folder
+	e.g. <app>/templates/<app>/
+	-Create view
+	-In views.py, we select objects from our database (using django shortcuts) and put it in a context
+	e.g. context = {'latest_question_list': latest_question_list}
+	-Return with function render "from django.shortcuts import render" with request, template, and context
+	e.g. render(request, '<app>/<view>.html', context)
+	-In checking/raising for 404 errors, use get_object_or_404(<Model>, kwargs) from django.shortcuts
+	-There is also  get_list_or_404() for a list of objects in the database
+	-To remove hardcoded URLs in the template, have a namespace to the URLconf. And set:
+		
+		app_name = '<app>';
+
+		Then equate href to "{% url 'app:view_name' kwargs %}"
+
+Install Python Requests and Beautiful Soup 4:
+	-pip install requests --upgrade
+	-pip install beautifulsoup4 --upgrade
+	-pip install spotipy
+
+	import requests
+	from bs4 import BeautifulSoup
+	requests.get()
+	BeautifulSoup(content, "html.parser")
