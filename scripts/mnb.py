@@ -2,7 +2,9 @@ import time as tm
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
@@ -24,37 +26,42 @@ def run():
 
 	# Separate features and labels from dataset
 	data_x = lyric_dataset['lyrics']
-	data_y = feature_dataset['valence']
+	data_y = feature_dataset
 
 
 	# Vectorize lyrics for computation
 	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True)
+	#cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
 	
 	# Split data; 80% for training and 20% for testing
-	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.5)
+	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y['valence'], test_size=0.2)
 
 	x_train_vc = cv.fit_transform(x_train)
 
-	mnb = MultinomialNB()
+	clf = MultinomialNB()
 	print('Multinomial Naive Bayes initialized.')
 
-	y_train	 = y_train.astype('int')
-
 	# Fit x and y to multinomial naive bayes model
-	mnb.fit(x_train_vc, y_train)
+	clf.fit(x_train_vc, y_train)
 	print('Training MNB model...')
-	tm.sleep(3)
 
 	# Vectorize features of test data
 	x_test_vc = cv.transform(x_test)
 
 	# Predict
-	pred = mnb.predict(x_test_vc)
+	pred = clf.predict(x_test_vc)
 	print('Predicting test dataset...')
-	tm.sleep(3)
 
 	# Convert to array the sequelized actual labels of test dataset
 	actual = np.array(y_test)
 
 	# Accuracy
 	print('MNB Accuracy: ' + str(accuracy_score(actual, pred)))
+	print('Performing K-Fold Cross Validation')
+	###### K-Fold Cross Validation
+	######
+	scores = cross_val_score(clf, cv.transform(data_x), data_y['valence'], cv=10)
+	print("Scores: " + str(scores))
+	print("Mean Score: " + str(scores.mean()))
+	######
+	######

@@ -1,12 +1,16 @@
+import math as mt
 import time as tm
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
-from .regression import predict
+from .regression import train
+from sklearn.metrics import mean_squared_error
 
 def run():
 	lyric_dataset = pd.read_csv('./resources/lyric_dataset.csv', sep=',')
@@ -25,26 +29,23 @@ def run():
 
 	# Separate features and labels from dataset
 	data_x = lyric_dataset['lyrics']
-	data_y = feature_dataset['valence']
+	data_y = feature_dataset
 
 
 	# Vectorize lyrics for computation
 	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True)
+	cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
 	
 	# Split data; 80% for training and 20% for testing
 	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.2)
 
 	x_train_vc = cv.fit_transform(x_train)
 
-	clf = SVC()
+	clf = SVC(kernel='linear', C=1)
 	print('SVM initialized.')
 
-	y_train	 = y_train.astype('int')
-
-	# Fit x and y to multinomial naive bayes model
-	clf.fit(x_train_vc, y_train)
+	clf.fit(x_train_vc, y_train['valence'])
 	print('Training svm model...')
-	tm.sleep(3)
 
 	# Vectorize features of test data
 	x_test_vc = cv.transform(x_test)
@@ -52,18 +53,69 @@ def run():
 	# Predict
 	pred = clf.predict(x_test_vc)
 	print('Predicting test dataset...')
-	tm.sleep(3)
 
 	# Convert to array the sequelized actual labels of test dataset
-	actual = np.array(y_test)
+	actual = np.array(y_test['valence'])
 
 	# Accuracy
 	print('SVM Accuracy: ' + str(accuracy_score(actual, pred)))
+	print('Performing K-Fold Cross Validation')
 
-	print(feature_dataset)
-	acousticness = predict('acousticness')
-	danceability = predict('danceability')
-	energy = predict('energy')
-	instrumentalness = predict('instrumentalness')
-	loudness = predict('loudness')
-	tempo = predict('tempo')
+	###### K-Fold Cross Validation
+	######
+	scores = cross_val_score(clf, cv.transform(data_x), data_y['valence'], cv=10)
+	print("Scores: " + str(scores))
+	print("Mean: " + str(scores.mean()))
+	######
+	######
+
+
+	"""
+	# Train models from given x and y values
+	acousticness = train('acousticness', x_train, x_test, y_train, y_test)
+	danceability = train('danceability', x_train, x_test, y_train, y_test)
+	energy = train('energy', x_train, x_test, y_train, y_test)
+	instrumentalness = train('instrumentalness', x_train, x_test, y_train, y_test)
+	loudness = train('loudness', x_train, x_test, y_train, y_test)
+	tempo = train('tempo', x_train, x_test, y_train, y_test)
+
+	# Redo data splitting for 
+	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.2)
+
+	x_test_vc = cv.transform(x_train)
+
+	predicted_acoustic_features = acousticness.predict(x_test_vc)
+	predicted_danceability_features = danceability.predict(x_test_vc)
+	predicted_energy_features = energy.predict(x_test_vc)
+	predicted_instrumentalness_features = instrumentalness.predict(x_test_vc)
+	predicted_loudness_features = loudness.predict(x_test_vc)
+	predicted_tempo_features = tempo.predict(x_test_vc)
+
+	
+	# Convert numpy arrays to pandas dataframe then concatenate
+	predicted_acoustic_features = convert_to_dataFrame(predicted_acoustic_features, 'acousticness')
+	predicted_danceability_features = convert_to_dataFrame(predicted_danceability_features, 'danceability')
+	predicted_energy_features = convert_to_dataFrame(predicted_energy_features, 'energy')
+	predicted_instrumentalness_features = convert_to_dataFrame(predicted_instrumentalness_features, 
+		'instrumentalness')
+	predicted_loudness_features = convert_to_dataFrame(predicted_loudness_features, 'loudness')
+	predicted_tempo_features = convert_to_dataFrame(predicted_tempo_features, 'tempo')
+	
+
+	predicted_features = [predicted_acoustic_features, predicted_danceability_features, predicted_energy_features, 
+		predicted_instrumentalness_features, predicted_loudness_features, predicted_tempo_features]
+
+	features = pd.concat(predicted_features, axis=1)
+	
+	print(features['acousticness'])
+	print(y_train['acousticness'])
+	"""
+	
+
+
+# Converts a numpy array to a pandas dataframe
+def convert_to_dataFrame(arr, name):
+	temp = pd.DataFrame(columns=[name])
+	for i in range(len(arr)):
+		temp.loc[i] = arr[i]
+	return temp
