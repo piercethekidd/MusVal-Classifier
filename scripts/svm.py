@@ -34,7 +34,7 @@ def run():
 
 	# Vectorize lyrics for computation
 	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True)
-	cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
+	# cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
 	
 	# Split data; 80% for training and 20% for testing
 	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.2)
@@ -59,7 +59,7 @@ def run():
 
 	# Accuracy
 	print('SVM Accuracy: ' + str(accuracy_score(actual, pred)))
-	print('Performing K-Fold Cross Validation')
+	print('Performing Cross Validation')
 
 	###### K-Fold Cross Validation
 	######
@@ -70,7 +70,7 @@ def run():
 	######
 
 
-	"""
+
 	# Train models from given x and y values
 	acousticness = train('acousticness', x_train, x_test, y_train, y_test)
 	danceability = train('danceability', x_train, x_test, y_train, y_test)
@@ -106,10 +106,14 @@ def run():
 		predicted_instrumentalness_features, predicted_loudness_features, predicted_tempo_features]
 
 	features = pd.concat(predicted_features, axis=1)
-	
-	print(features['acousticness'])
-	print(y_train['acousticness'])
-	"""
+
+	clf = SVC(kernel='linear', C=1)
+	clf.fit(features, y_train['valence'])
+	pred = clf.predict(y_test.drop(columns=['id', 'song', 'valence']))
+	actual = clf.actual = np.array(y_test['valence'])
+
+	print('SVM Accuracy: ' + str(accuracy_score(actual, pred)))
+
 	
 
 

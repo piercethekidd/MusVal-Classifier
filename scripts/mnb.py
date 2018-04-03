@@ -31,7 +31,7 @@ def run():
 
 	# Vectorize lyrics for computation
 	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True)
-	#cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
+	# cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
 	
 	# Split data; 80% for training and 20% for testing
 	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y['valence'], test_size=0.2)
@@ -57,7 +57,7 @@ def run():
 
 	# Accuracy
 	print('MNB Accuracy: ' + str(accuracy_score(actual, pred)))
-	print('Performing K-Fold Cross Validation')
+	print('Performing Cross Validation')
 	###### K-Fold Cross Validation
 	######
 	scores = cross_val_score(clf, cv.transform(data_x), data_y['valence'], cv=10)
