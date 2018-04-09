@@ -9,6 +9,7 @@ et-xmlfile==1.0.1
 idna==2.5
 jdcal==1.3
 lyricsgenius==0.4.1
+nltk==3.2.5
 numpy==1.14.2
 odfpy==1.3.6
 openpyxl==2.5.1

@@ -1,13 +1,21 @@
 import time as tm
 import numpy as np
 import pandas as pd
+from nltk import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 from sklearn.svm import SVC
+from sklearn.pipeline import Pipeline
+from sklearn.decomposition import PCA
+from sklearn.decomposition import TruncatedSVD
 
 def run():
 	lyric_dataset = pd.read_csv('./resources/lyric_dataset.csv', sep=',')
@@ -26,42 +34,33 @@ def run():
 
 	# Separate features and labels from dataset
 	data_x = lyric_dataset['lyrics']
-	data_y = feature_dataset
+	data_y = feature_dataset['valence']
+	#data_x = np.array(data_x)
 
 
-	# Vectorize lyrics for computation
-	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True)
-	# cv = CountVectorizer(min_df=1, stop_words='english', lowercase=True)
 	
-	# Split data; 80% for training and 20% for testing
-	x_train, x_test, y_train, y_test = train_test_split(data_x, data_y['valence'], test_size=0.2)
-
-	x_train_vc = cv.fit_transform(x_train)
-
-	clf = MultinomialNB()
+	# Initialize Count Vectorizer and Multinomial Naive Bayes as estimators for pipelining
+	estimators = [('vectorizer', CountVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(2,2))),
+	('clf', MultinomialNB())]
+	pipe = Pipeline(estimators)
 	print('Multinomial Naive Bayes initialized.')
+	print('Performing K-Fold Cross Validation where K = 10')
 
-	# Fit x and y to multinomial naive bayes model
-	clf.fit(x_train_vc, y_train)
-	print('Training MNB model...')
 
-	# Vectorize features of test data
-	x_test_vc = cv.transform(x_test)
-
-	# Predict
-	pred = clf.predict(x_test_vc)
-	print('Predicting test dataset...')
-
-	# Convert to array the sequelized actual labels of test dataset
-	actual = np.array(y_test)
-
-	# Accuracy
-	print('MNB Accuracy: ' + str(accuracy_score(actual, pred)))
-	print('Performing Cross Validation')
 	###### K-Fold Cross Validation
 	######
-	scores = cross_val_score(clf, cv.transform(data_x), data_y['valence'], cv=10)
+	scores = cross_val_score(pipe, data_x, data_y, cv=KFold(n_splits=10, shuffle=True))
 	print("Scores: " + str(scores))
-	print("Mean Score: " + str(scores.mean()))
+	print("Mean Score: %.4f" % scores.mean())
 	######
 	######
+	
+class Stem(object):
+
+	def __init__(self):
+		self.stemmer = SnowballStemmer('english')
+		self.analyzer = CountVectorizer(min_df=1, stop_words='english', lowercase=True).build_analyzer()
+
+	def __call__(self, doc):
+		return [self.stemmer.stem(t) for t in self.analyzer(doc)]
+
