@@ -1,7 +1,8 @@
-Classifying Musical Valence Using Spotify Audio Features
+Classifying Musical Valence Using Spotify Audio Features and Lyrics
 
-Edited April 3, 2018
+Edited April 11, 2018
 
-- Replace simple cross validation function with k-fold cross validation
-- Apply built-in feature selection in scikit-learn
-- Train a model to classify valence using predicted regression values
+- Input lyrics and predict classification (SVM and MNB)
+- Search song and retrieve lyrics and audio features (SVM with audio features)
+- User-Interface Support and plot data with MNB and SVM
+- Special Topic Paper (Results and Discussion + Conclusion + Future Works)
