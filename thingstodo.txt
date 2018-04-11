@@ -1,8 +1,11 @@
 Classifying Musical Valence Using Spotify Audio Features and Lyrics
 
-Edited April 11, 2018
+Edited April 12, 2018
 
 - Input lyrics and predict classification (SVM and MNB)
 - Search song and retrieve lyrics and audio features (SVM with audio features)
-- User-Interface Support and plot data with MNB and SVM
+- User-Interface Support and plot data with MNB and SVM using matplotlib
+- Create separate scripts for stemming, tuning, and plotting
+- Fix Model Persistence: MNB
+- Tune kernel parameters(linear, rbf, poly)
 - Special Topic Paper (Results and Discussion + Conclusion + Future Works)
