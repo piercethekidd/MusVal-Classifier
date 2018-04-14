@@ -35,10 +35,10 @@ def run():
 	data_x = lyric_dataset['lyrics']
 	data_y = feature_dataset['valence']
 
-	
+	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))
+	data_x = cv.fit_transform(data_x)
 	# Initialize Count Vectorizer and Multinomial Naive Bayes as estimators for pipelining
-	estimators = [('vectorizer', CountVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))),
-	('clf', MultinomialNB())]
+	estimators = [('clf', MultinomialNB())]
 	pipe = Pipeline(estimators)
 	print('Multinomial Naive Bayes initialized.')
 	print('Performing K-Fold Cross Validation where K = 10')

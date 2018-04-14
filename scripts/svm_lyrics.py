@@ -41,8 +41,9 @@ def run():
 	Use Vectorizer for lyrics and TruncatedSVD dimensionality reduction method to reduce number of features and 
 	initialize SVM then use pipelining in Scikit-learn
 	"""
-	estimators = [('cv', TfidfVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))),
-	('reduce_dim', TruncatedSVD()), 
+	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))
+	x = cv.fit_transform(x)
+	estimators = [('reduce_dim', TruncatedSVD()), 
 	('clf', SVC(C=1, kernel='linear'))]
 	pipe = Pipeline(estimators)
 
