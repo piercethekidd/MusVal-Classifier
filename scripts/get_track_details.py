@@ -14,7 +14,7 @@ def run():
 	spotify = spotipy.Spotify(auth=token)
 
 	
-	fp = open('resources/index_counter.txt', 'a+')
+	fp = open('res/index_counter.txt', 'a+')
 	fp.seek(0)
 	if fp.readline() == '':
 		fp.write('0\n0')

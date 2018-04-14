@@ -1,3 +1,13 @@
-{% if wat %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My basic static file sample</title>
+	<link rel="stylesheet" type="text/css" href='{% static "css/base.css" %}'>
+</head>
+<body>
+	{% if wat %}
 	<h1>{{wat}}</h1>
-{% endif %}
+	{% endif %}
+</body>
+</html>

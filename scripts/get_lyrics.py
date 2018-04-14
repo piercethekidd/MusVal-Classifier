@@ -10,7 +10,7 @@ from songs.models import Song, Lyric
 def run():
 	
 	api = genius.Genius('EvIwS8Hujru0G5Oxr8sulv9z5YLaml5gVIR9JlGGDVjomh-9LOmwSJBbyQzOqbZ3')
-	fp = open('resources/index_counter.txt', 'a+')
+	fp = open('res/index_counter.txt', 'a+')
 	fp.seek(0)
 	index = int(fp.readline())
 

@@ -9,9 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
-from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.externals import joblib
 
@@ -19,8 +17,8 @@ from sklearn.externals import joblib
 def run():
 
 	# Read data from csv
-	lyric_dataset = pd.read_csv('./resources/lyric_dataset.csv', sep=',')
-	feature_dataset = pd.read_csv('./resources/feature_dataset.csv', sep=',')
+	lyric_dataset = pd.read_csv('./res/lyric_dataset.csv', sep=',')
+	feature_dataset = pd.read_csv('./res/feature_dataset.csv', sep=',')
 
 	print('Lyrics and features list opened.')
 
@@ -52,7 +50,7 @@ def run():
 	print("Mean Score: %.4f" % scores.mean())
 
 	# Model persistence; Save current model for future use
-	joblib.dump(pipe, './resources/mnb.pkl')
+	joblib.dump(pipe, './res/mnb.pkl')
 
 
 # Define a stemming callable to provide stemming for Lyrics Vectorizer

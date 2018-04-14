@@ -17,8 +17,8 @@ from sklearn.externals import joblib
 def run():
 
 	# Read data from csv
-	lyric_dataset = pd.read_csv('./resources/lyric_dataset.csv', sep=',')
-	feature_dataset = pd.read_csv('./resources/feature_dataset.csv', sep=',')
+	lyric_dataset = pd.read_csv('./res/lyric_dataset.csv', sep=',')
+	feature_dataset = pd.read_csv('./res/feature_dataset.csv', sep=',')
 
 	print('Lyrics and features list opened.')
 
@@ -59,12 +59,12 @@ def run():
 	print("Mean Score: %.4f" % scores.mean())
 
 	# Model persistence; Save current model for future use
-	joblib.dump(pipe, './resources/svm_with_audio_features_pipe.pkl')
-	joblib.dump(pipe, './resources/tdidfvectorizer.pkl')
+	joblib.dump(pipe, './res/svm_with_audio_features_pipe.pkl')
+	joblib.dump(pipe, './res/tdidfvectorizer.pkl')
 
 	# Initialize PCA for plotting with n=2 dimensions
-	pca = PCA(n_components=2)
-	plot = pca.fit_transform(x)
+	#pca = PCA(n_components=2)
+	#plot = pca.fit_transform(x)
 	
 	# Segregate positive and negative valence indexes for plotting
 	"""

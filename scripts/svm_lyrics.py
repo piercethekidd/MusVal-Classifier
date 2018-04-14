@@ -16,8 +16,8 @@ from sklearn.externals import joblib
 def run():
 
 	# Read data from csv
-	lyric_dataset = pd.read_csv('./resources/lyric_dataset.csv', sep=',')
-	feature_dataset = pd.read_csv('./resources/feature_dataset.csv', sep=',')
+	lyric_dataset = pd.read_csv('./res/lyric_dataset.csv', sep=',')
+	feature_dataset = pd.read_csv('./res/feature_dataset.csv', sep=',')
 
 	print('Lyrics and features list opened.')
 
@@ -55,7 +55,7 @@ def run():
 	print("Mean Score: %.4f" % scores.mean())
 
 	# Model persistence; Save current model for future use
-	joblib.dump(pipe, './resources/svm_lyrics.pkl')
+	joblib.dump(pipe, './res/svm_lyrics.pkl')
 	
 # Parameter tuning using the pipeline, x, and y as inputs
 def tune_parameters(pipe, x, y):

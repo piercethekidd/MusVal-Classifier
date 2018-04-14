@@ -32,5 +32,5 @@ def run():
 		
 	print("Total song count: " + str(Song.objects.count()))
 
-	fp = open('resources/index_counter.txt', 'w')
+	fp = open('res/index_counter.txt', 'w')
 	fp.write('0\n0')
