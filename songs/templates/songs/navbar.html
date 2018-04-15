@@ -9,20 +9,20 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="{% url 'songs:index' %}">Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Results and Discussions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Training Results</a>
-          <a class="dropdown-item" href="#">Graphs and Statistics</a>
-          <a class="dropdown-item" href="#">Methodology</a>
+          <a class="dropdown-item" href="{% url 'songs:results' %}">Training Results</a>
+          <a class="dropdown-item" href="{% url 'songs:statistics' %}">Graphs and Statistics</a>
+          <a class="dropdown-item" href="{% url 'songs:methodology' %}">Methodology</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Search</a>
+        <a class="nav-link" href="{% url 'songs:search' %}">Search</a>
       </li>
     </ul>
   </div>
