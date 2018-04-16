@@ -8,7 +8,7 @@
 			<div class="card">
 				<div class="card-body">
 					<h4 id="head" class="card-title">Search Lyrics using the Genius API</h4>
-					
+					{% csrf_token %}
 					<div class="form-group">
 						<label for="title">Song Title</label>
 						<input type="text" class="form-control" id="title" placeholder="Title" required>
@@ -17,7 +17,7 @@
 						<label for="artist">Song Artist</label>
 						<input type="text" class="form-control" id="artist" placeholder="Artist" required>
 					</div>
-					<button id="searchBtn" type="submit" class="btn btn-primary">Search</button>
+					<button id="searchBtn" type="submit" class="btn btn-secondary">Search</button>
 				</div>
 			</div>
 			<div id="spotifyCard" class="card">
@@ -33,6 +33,12 @@
 				<div class="card-body">
 					<h5 id="cardTitle" class="card-title"></h5>
 					<p id="lyrics"></p>
+					<form action="{% url 'songs:svm' %}" method="post">
+						{% csrf_token %}
+						<input type="hidden" name="id" id="track_id">
+						<input type="hidden" name="lyrics" id="track_lyrics">
+						<button id="classify" type="submit" class="btn btn-secondary">Get Audio Features and Classify  <i class="fas fa-chevron-circle-right"></i></i></button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -63,6 +69,14 @@ $(document).ready(function(){
         		$("#cardTitle").html(data.title + " - " + data.artist);
         		$("#lyrics").html(data.song);
         		$("#spotifyImgCard").attr("src", data.url);
+        		$("#description").html(
+        			"Spotify ID: " + data.id + "<br/>" +
+        			"Artist: " + data.artist + "<br/>" +
+        			"Album: " + data.album + "<br/>" +
+        			"Date Released: " + data.date
+        		);
+        		$("#track_id").val(data.id);
+        		$("#track_lyrics").val(data.song);
         	}
         });
     });

@@ -86,18 +86,52 @@ def ajax_search(request):
 	track = results['tracks']['items'][0]
 	track_name = track['name']
 	track_artist = track['artists'][0]['name']
+
 	image_url = track['album']['images'][0]['url']
+	track_album = track['album']['name']
+	track_date = track['album']['release_date']
+
+	track_id = track['id']
+
 
 	api = genius.Genius('EvIwS8Hujru0G5Oxr8sulv9z5YLaml5gVIR9JlGGDVjomh-9LOmwSJBbyQzOqbZ3')
 	song = api.search_song(title, artist)
 	data = {
 		'song':song.lyrics,
+		'id' : track_id,
 		'title': track_name,
 		'artist': track_artist,
 		'url': image_url,
+		'album': track_album,
+		'date': track_date
 	}
 
 	return JsonResponse(data)
+
+def svm(request):
+	# Setup auth tokens for GENIUS and SPOTIFY API
+	scope = 'user-library-read'
+	username = '12183890197'
+	token = util.prompt_for_user_token(username, scope, client_id="b226f2bec10e4127a60ec75e26562562", 
+		client_secret="4a5041b096554a9e896ffbf83a214008", redirect_uri="https://example.com/callback/")
+	spotify = spotipy.Spotify(auth=token)
+
+	track_id = request.POST.get('id')
+	track_lyrics = request.POST.get('lyrics')
+
+	features = spotify.audio_features(track_id)
+	track_acousticness = features[0]['acousticness']
+	track_danceability = features[0]['danceability']
+	track_energy = features[0]['energy']
+	track_instrumentalness = features[0]['instrumentalness']
+	track_loudness = features[0]['loudness']
+	track_tempo = features[0]['tempo']
+	track_valence = features[0]['valence']
+	
+	context = {
+		'lyrics': track_lyrics,
+	}
+	return render(request, 'songs/svm.html', context)
 
 
 # Define a stemming callable to provide stemming for Lyrics Vectorizer

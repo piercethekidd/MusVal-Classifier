@@ -14,6 +14,7 @@ urlpatterns = [
 	path('classify/results', views.classify, name="classify"),
 	path('classify/search', views.search, name="search"),
 	path('classify/search/ajax', views.ajax_search, name="ajax_search"),
+	path('classify/svm-with-audio-features', views.svm, name="svm"),
 
 
 ]
