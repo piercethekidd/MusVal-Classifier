@@ -59,8 +59,8 @@ def run():
 	print("Mean Score: %.4f" % scores.mean())
 
 	# Model persistence; Save current model for future use
+	pipe.fit(x, y)
 	joblib.dump(pipe, './res/svm_with_audio_features_pipe.pkl')
-	joblib.dump(pipe, './res/tdidfvectorizer.pkl')
 
 	# Initialize PCA for plotting with n=2 dimensions
 	#pca = PCA(n_components=2)

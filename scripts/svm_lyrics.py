@@ -56,6 +56,7 @@ def run():
 	print("Mean Score: %.4f" % scores.mean())
 
 	# Model persistence; Save current model for future use
+	pipe.fit(x, y)
 	joblib.dump(pipe, './res/svm_lyrics.pkl')
 	
 # Parameter tuning using the pipeline, x, and y as inputs

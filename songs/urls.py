@@ -10,6 +10,9 @@ urlpatterns = [
 	path('results/', views.results, name="results"),
 	path('statistics/', views.statistics, name="statistics"),
 	path('methodology/', views.methodology, name="methodology"),
-	path('search/', views.search, name="search"),
+	path('classify/', views.classify_index, name="classify_index"),
+	path('classify/results', views.classify, name="classify"),
+	path('classify/search', views.search, name="search"),
+
 
 ]

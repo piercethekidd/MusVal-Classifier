@@ -1,0 +1,12 @@
+{% include 'songs/header.html' %}
+
+{% include 'songs/navbar.html' %}
+{% if valence %}
+<h1> Positive </h1>
+{% else %}
+<h1> Negative </h1>
+{% endif %}
+
+<h2>Using {{ classifier }}</h2>
+
+{% include 'songs/footer.html' %}

@@ -50,7 +50,9 @@ def run():
 	print("Mean Score: %.4f" % scores.mean())
 
 	# Model persistence; Save current model for future use
+	pipe.fit(data_x, data_y)
 	joblib.dump(pipe, './res/mnb.pkl')
+
 
 
 # Define a stemming callable to provide stemming for Lyrics Vectorizer
