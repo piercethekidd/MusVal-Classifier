@@ -1,18 +1,71 @@
 {% include 'songs/header.html' %}
 
 {% include 'songs/navbar.html' %}
+
 <div class="container">
-	<div class"row>
-	<form>
-	  <div class="form-group">
-	    <label for="formGroupExampleInput">Song Title</label>
-	    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
-	  </div>
-	  <div class="form-group">
-	    <label for="formGroupExampleInput2">Song Artist</label>
-	    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
-	  </div>
-	</form>
+	<div class="row">
+		<div class="col">
+			<div class="card">
+				<div class="card-body">
+					<h4 id="head" class="card-title">Search Lyrics using the Genius API</h4>
+					
+					<div class="form-group">
+						<label for="title">Song Title</label>
+						<input type="text" class="form-control" id="title" placeholder="Title" required>
+					</div>
+					<div class="form-group">
+						<label for="artist">Song Artist</label>
+						<input type="text" class="form-control" id="artist" placeholder="Artist" required>
+					</div>
+					<button id="searchBtn" type="submit" class="btn btn-primary">Search</button>
+				</div>
+			</div>
+			<div id="spotifyCard" class="card">
+				<img id="spotifyImgCard" class="card-img-top" src="" alt="Card image cap">
+				<div class="card-body">
+					<h5 class="card-title" id="spotifyCardHeader">Track Details:</h5>
+					<p class="card-text" id="description"></p>
+				</div>
+			</div>
+		</div>	
+		<div class="col" id="lyricsCard">
+			<div class="card">
+				<div class="card-body">
+					<h5 id="cardTitle" class="card-title"></h5>
+					<p id="lyrics"></p>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 </div>
+
+{% include 'songs/scripts.html' %}
+<script>
+$(document).ready(function(){
+	$("#lyricsCard").hide();
+	$("#spotifyCard").hide();
+    $("#searchBtn").click(function(){
+    	var title = $("#title").val();
+    	var artist = $("#artist").val();
+        $.ajax({
+        	url: "{% url 'songs:ajax_search' %}",
+        	data: {
+        		'title': title,
+        		'artist': artist
+
+        	},
+        	dataType: 'json',
+        	success: function(data) {
+        		$("#lyricsCard").show();
+        		$("#spotifyCard").show();
+
+        		$("#cardTitle").html(data.title + " - " + data.artist);
+        		$("#lyrics").html(data.song);
+        		$("#spotifyImgCard").attr("src", data.url);
+        	}
+        });
+    });
+});
+</script>
 {% include 'songs/footer.html' %}

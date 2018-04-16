@@ -3,10 +3,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from songs.models import Song
 from sklearn.externals import joblib
+from django.http import JsonResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem import SnowballStemmer
 from scripts.fit import fit
+import lyricsgenius as genius
+import spotipy
+import spotipy.util as util
 
 
 # Create your views here.
@@ -65,6 +69,36 @@ def classify(request):
 # Search
 def search(request):
 	return render(request, 'songs/search.html', {})
+
+def ajax_search(request):
+	artist = request.GET.get('artist', None)
+	title = request.GET.get('title', None)
+
+	# Setup auth tokens for GENIUS and SPOTIFY API
+	scope = 'user-library-read'
+	username = '12183890197'
+	token = util.prompt_for_user_token(username, scope, client_id="b226f2bec10e4127a60ec75e26562562", 
+		client_secret="4a5041b096554a9e896ffbf83a214008", redirect_uri="https://example.com/callback/")
+	spotify = spotipy.Spotify(auth=token)
+
+	query = artist + " " + title
+	results = spotify.search(q=query, type='track')
+	track = results['tracks']['items'][0]
+	track_name = track['name']
+	track_artist = track['artists'][0]['name']
+	image_url = track['album']['images'][0]['url']
+
+	api = genius.Genius('EvIwS8Hujru0G5Oxr8sulv9z5YLaml5gVIR9JlGGDVjomh-9LOmwSJBbyQzOqbZ3')
+	song = api.search_song(title, artist)
+	data = {
+		'song':song.lyrics,
+		'title': track_name,
+		'artist': track_artist,
+		'url': image_url,
+	}
+
+	return JsonResponse(data)
+
 
 # Define a stemming callable to provide stemming for Lyrics Vectorizer
 class Stem(object):
