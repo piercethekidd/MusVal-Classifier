@@ -1,46 +1,42 @@
+{% load staticfiles %}
 {% include 'songs/header.html' %}
 {% include 'songs/navbar.html' %}
 
 <div class="jumbotron">
 	<div class="container">
 		<h1 class="display-4">Classifiying Musical Valence using Lyrics and Spotify Features as Audio Features</h1>
-		<p class="lead">Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur.</p>
+		<p class="lead">This is a Special Problem Topic in partial completion of CMSC 190 that aims to classify songs based on its lyrics and audio features obtained from the Spotify API. Classification techniques like Multinomial Naive Bayes Classifiers and Support Vector Machines are used to classify valence.</p>
 		<p class="lead">
-			<a class="btn btn-primary btn-lg" href="#" role="button">See Training Results</a>
-			<a class="btn btn-lg btn-outline-secondary" href="#" role="button">Search Lyrics and Classify</a>
+			<a class="btn btn-success btn-lg" href="#" role="button">See Training Results</a>
+			<a class="btn btn-lg btn-secondary" href="{% url 'songs:classify_index' %}" role="button">Search Lyrics and Classify</a>
 		</p>
 	</div>
 </div>
 <div class="container">
 	<div class="row">
-		<div class="col">
+		<div class="card-deck">
 			<div class="card">
 				<div class="card-body text-center">
-					<h5 class="card-title">Card title</h5>
-					<p class="card-text">Some quick text to build on the card title. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur.</p>
-					<a class="btn btn-primary btn-md" href="#" role="button">See Results</a>
+					<img id="geniusImgCard" class="card-img-top" src="{% static 'img/genius.png' %}" alt="Card image cap"><br><br>
+					<p class="card-text">Search song lyrics by using the Genius API. Genius is an American digital media company that provides annotations and interpretation of song lyrics, news stories, sources, poetry, and documents.</p>
+					<a class="btn btn-outline-success btn-md" href="https://genius.com/developers" role="button">Try Genius for Developers</a>
 				</div>
 						
 			</div>
-		</div>
-		<div class="col">
 			<div class="card">
 				<div class="card-body text-center">
-					<h5 class="card-title">Card title</h5>
-					<p class="card-text">Some quick text to build on the card title. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur.</p>
-					<a class="btn btn-primary btn-md" href="#" role="button">See Results</a>
+					<img id="spotifyImgCard" class="card-img-top" src="{% static 'img/spotify.png' %}" alt="Card image cap"><br><br>
+					<p class="card-text">Through its API, Spotify has brought musical analysis to a whole new level by providing audio features and analysis from its large collection of music. Retrieve a track's acousticness, energy, loudness, and other features that might be essential to your study.Spotify is a music, podcast, and video streaming service developed and owned by Spotify Technology SA in Stockholm, Sweden.</p>
+					<a class="btn btn-outline-success btn-md" href="https://developer.spotify.com/" role="button">Check out Spotify for Developers</a>
 				</div>
 						
 			</div>
-		</div>
-		<div class="col">
 			<div class="card">
 				<div class="card-body text-center">
-					<h5 class="card-title">Card title</h5>
-					<p class="card-text">Some quick text to build on the card title. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur. Lorem ipsum dolor sit amet, consectetur.</p>
-					<a class="btn btn-primary btn-md" href="#" role="button">See Results</a>
-				</div>
-						
+					<img id="scikitImgCard" class="card-img-top" src="{% static 'img/scikit-learn.png' %}" alt="Card image cap"><br><br>
+					<p class="card-text">Scikit-learn is a free software machine learning library for the Python programming language. It features various classification, regression, and clustering algorithms, and is designed to interoperate with NumPy and SciPy.</p>
+					<a class="btn btn-outline-success btn-md" href="http://scikit-learn.org/stable/documentation.html" role="button">Try Scikit-learn</a>
+				</div>		
 			</div>
 		</div>	
 	</div>
