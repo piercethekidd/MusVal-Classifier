@@ -11,6 +11,10 @@ from scripts.fit import fit
 import lyricsgenius as genius
 import spotipy
 import spotipy.util as util
+import pandas as pd
+import scipy as sp
+import numpy as np
+
 
 
 # Create your views here.
@@ -117,19 +121,58 @@ def svm(request):
 	spotify = spotipy.Spotify(auth=token)
 
 	track_id = request.POST.get('id')
-	track_lyrics = request.POST.get('lyrics')
+	lyrics = request.POST.get('lyrics')
 
 	features = spotify.audio_features(track_id)
-	track_acousticness = features[0]['acousticness']
-	track_danceability = features[0]['danceability']
-	track_energy = features[0]['energy']
-	track_instrumentalness = features[0]['instrumentalness']
-	track_loudness = features[0]['loudness']
-	track_tempo = features[0]['tempo']
-	track_valence = features[0]['valence']
+	acousticness = features[0]['acousticness']
+	danceability = features[0]['danceability']
+	energy = features[0]['energy']
+	instrumentalness = features[0]['instrumentalness']
+	loudness = features[0]['loudness']
+	tempo = features[0]['tempo']
+	valence = features[0]['valence']
+
+	track = spotify.track(track_id)
+	artist = track['artists'][0]['name']
+	title = track['name']
+	url = track['album']['images'][0]['url']
 	
+	dic = {
+		'acousticness': [acousticness],
+		'danceability': [danceability],
+		'energy': [energy],
+		'instrumentalness': [instrumentalness],
+		'loudness': [loudness],
+		'tempo': [tempo],
+		'valence': [valence],
+	}
+
+	df = pd.DataFrame(data=dic)
+	vectorizer = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))
+	vectorizer = fit(vectorizer)
+	lyrics_list = []
+	lyrics_list.append(lyrics)
+	x = sp.sparse.hstack((vectorizer.transform(lyrics_list), df[['acousticness','danceability',
+		'energy', 'instrumentalness', 'loudness','tempo']].values), format='csr')
+	x = x.todense()
+
+	clf = joblib.load('./res/svm_with_audio_features_pipe.pkl')
+	y = clf.predict(x)
+	print(y)
+
 	context = {
-		'lyrics': track_lyrics,
+		'artist': artist,
+		'title': title,
+		'url': url,
+		'lyrics': lyrics,
+		'acousticness': acousticness,
+		'danceability': danceability,
+		'energy': energy,
+		'instrumentalness': instrumentalness,
+		'loudness': loudness,
+		'tempo': tempo,
+		'valence': valence,
+		'predicted': y,
 	}
 	return render(request, 'songs/svm.html', context)
 

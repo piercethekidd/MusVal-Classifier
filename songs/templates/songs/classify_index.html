@@ -2,22 +2,25 @@
 
 {% include 'songs/navbar.html' %}
 <div class="container">
-<form action="{% url 'songs:classify' %}" method="post">
+<div class="card">
+	<form action="{% url 'songs:classify' %}" method="post">
 	{% csrf_token %}
+	<div class="card-body">
 	<div class="form-group">
-		<label for="lyricsTextArea">Enter Lyrics:</label>
+		<label class="lead" for="lyricsTextArea">Enter Lyrics:</label>
 		<textarea class="form-control" id="lyricsTextArea" rows="15" name="lyrics" required></textarea>
 
-		<label for="classifier">Select Classifier</label>
+		<label class="lead" for="classifier">Select Classifier</label>
 	    <select class="form-control" id="classifier" name="classifier">
 	      <option>Multinomial Naive Bayes</option>
 	      <option>Support Vector Classifier without Audio Features</option>
 	    </select>
 	</div>
-	<button type="submit" class="btn btn-secondary">Submit</button>
-</form>
-<h5> or Search for a Song and its Audio Features and Use SVM</h5>
-<a class="btn btn-secondary btn-md" href="{% url 'songs:search' %}" role="button">Search!</a>
+	<button type="submit" class="btn btn-secondary">Submit</button><br><br>
+	<a  href="{% url 'songs:search' %}">Don't know the lyrics? Search here.</a>
+	</div>
+	</form>
+</div>
 </div>
 
 {% include 'songs/scripts.html' %}

@@ -7,13 +7,13 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" href="{% url 'songs:index' %}">Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Results and Discussions
+          Results
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="{% url 'songs:results' %}">Training Results</a>
@@ -21,8 +21,14 @@
           <a class="dropdown-item" href="{% url 'songs:methodology' %}">Methodology</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'songs:classify_index' %}">Classify</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Classify
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'songs:classify_index' %}">Without Audio Features</a>
+          <a class="dropdown-item" href="{% url 'songs:search' %}">Search Lyrics with Audio Features</a>
+        </div>
       </li>
     </ul>
   </div>

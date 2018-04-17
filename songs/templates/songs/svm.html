@@ -2,7 +2,40 @@
 {% include 'songs/navbar.html' %}
 
 
-<p>{{ lyrics }}</p>
+<div class="container">
+<div class="row">
+	<div class="card-deck">
+		<div class="card">
+			<img id="imgCard" class="card-img-top" src="{{url}}" alt="Card image cap">
+		</div>
+		<div class="card">
+			<h5 class="card-header" id="spotifyCardHeader">{{title}} - {{artist}}</h5>
+			<div class="card-body">
+				{% if predicted %}
+				<h3>Positive</h3>
+				{% else %}
+				<h3>Negative</h3>
+				{% endif %}
+				<p>Using SVM with Audio Features</p>
+				<a href="{% url 'songs:search' %}" class="btn btn-secondary">Search again</a>
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<h3>Track Details:</h3>
+					<p>Acousticness: {{acousticness}}</p>
+					<p>Danceability: {{danceability}}</p>
+					<p>Energy: {{energy}}</p>
+					<p>Instrumentalness: {{instrumentalness}}</p>
+					<p>Loudness: {{loudness}}</p>
+					<p>Tempo: {{tempo}}</p>
+					<p>Valence: {{valence}}</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+</div>
+
 
 {% include 'songs/scripts.html' %}
 
