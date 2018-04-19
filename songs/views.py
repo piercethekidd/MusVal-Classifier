@@ -54,17 +54,19 @@ def classify(request):
 	vectorizer = fit(vectorizer)
 	
 	classifier = request.POST.get('classifier')
+	lyrics = request.POST.get('lyrics')
 	if classifier == "Multinomial Naive Bayes":
 		clf = joblib.load('./res/mnb.pkl')
 	else:
 		clf = joblib.load('./res/svm_lyrics.pkl')
 	
 	lyrics_list = []
-	lyrics_list.append(request.POST.get('lyrics'))
+	lyrics_list.append(lyrics)
 	x = vectorizer.transform(lyrics_list)
 	valence = clf.predict(x)
 
 	context = {
+		'lyrics' : lyrics,
 		'valence': valence,
 		'classifier': classifier,
 	}

@@ -2,12 +2,13 @@
 
 {% include 'songs/navbar.html' %}
 
+<br>
 <div class="container">
 	<div class="row">
 		<div class="col">
 			<div class="card">
+				<h4 id="head" class="card-header">Search Lyrics using the Genius API</h4>
 				<div class="card-body">
-					<h4 id="head" class="card-title">Search Lyrics using the Genius API</h4>
 					{% csrf_token %}
 					<div class="form-group">
 						<label for="title">Song Title</label>
@@ -23,21 +24,35 @@
 			<div id="spotifyCard" class="card">
 				<img id="spotifyImgCard" class="card-img-top" src="" alt="Card image cap">
 				<div class="card-body">
-					<h5 class="card-title" id="spotifyCardHeader">Track Details:</h5>
+					<h4 class="card-title" id="spotifyCardHeader">Track Details:</h4>
 					<p class="card-text" id="description"></p>
 				</div>
 			</div>
 		</div>	
 		<div class="col" id="lyricsCard">
 			<div class="card">
+				<h5 id="cardTitle" class="card-header"></h5>
 				<div class="card-body">
-					<h5 id="cardTitle" class="card-title"></h5>
 					<p id="lyrics"></p>
 					<form action="{% url 'songs:svm' %}" method="post">
 						{% csrf_token %}
 						<input type="hidden" name="id" id="track_id">
-						<input type="hidden" name="lyrics" id="track_lyrics">
-						<button id="classify" type="submit" class="btn btn-secondary">Get Audio Features and Classify  <i class="fas fa-chevron-circle-right"></i></i></button>
+						<input class="track_lyrics" type="hidden" name="lyrics" id="track_lyrics">
+						<button id="classify" type="submit" class="btn btn-outline-secondary">Get Audio Features and Classify with SVM</button>
+					</form>
+					<br>
+					<form action="{% url 'songs:classify' %}" method="post">
+						{% csrf_token %}
+						<input type="hidden" name="classifier" value="Support Vector Classifier without Audio Features">
+						<input class="track_lyrics" type="hidden" name="lyrics">
+						<button id="classify" type="submit" class="btn btn-outline-secondary">Classify using SVM without Audio Features</button>
+					</form>
+					<br>
+					<form action="{% url 'songs:classify' %}" method="post">
+						{% csrf_token %}
+						<input type="hidden" name="classifier" value="Multinomial Naive Bayes">
+						<input class="track_lyrics" type="hidden" name="lyrics">
+						<button id="classify" type="submit" class="btn btn-outline-secondary">Classify using Multinomial Naive Bayes</button>
 					</form>
 				</div>
 			</div>
@@ -67,7 +82,8 @@ $(document).ready(function(){
         		$("#spotifyCard").show();
 
         		$("#cardTitle").html(data.title + " - " + data.artist);
-        		$("#lyrics").html(data.song);
+        		var lyrics = data.song.replace(/\n/g, "<br>");
+        		$("#lyrics").html(lyrics);
         		$("#spotifyImgCard").attr("src", data.url);
         		$("#description").html(
         			"Spotify ID: " + data.id + "<br/>" +
@@ -76,7 +92,7 @@ $(document).ready(function(){
         			"Date Released: " + data.date
         		);
         		$("#track_id").val(data.id);
-        		$("#track_lyrics").val(data.song);
+        		$(".track_lyrics").val(data.song);
         	}
         });
     });

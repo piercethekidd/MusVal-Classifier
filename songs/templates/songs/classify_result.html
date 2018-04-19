@@ -3,14 +3,37 @@
 {% include 'songs/navbar.html' %}
 
 
-{% if valence %}
-<h1> Positive </h1>
-{% else %}
-<h1> Negative </h1>
-{% endif %}
-
-<h2>Using {{ classifier }}</h2>
+<br>
+<div class="container">
+<div class="row">
+	<div class="card-group">
+		<div class="card">
+			<h5 class="card-header" id="lyricsHeader">Lyrics</h5>
+			<div class="card-body">
+				<p id="lyricsPar">{{lyrics}}</p>
+			</div>
+		</div>
+		<div class="card">
+			<h5 class="card-header" id="valenceHeader">Predicted Musical Valence</h5>
+			<div class="card-body">
+				{% if valence %}
+				<h3>Positive</h3>
+				{% else %}
+				<h3>Negative</h3>
+				{% endif %}
+				<p>Using {{classifier}}</p>
+				<a href="{% url 'songs:classify_index' %}" class="btn btn-success">Try again</a>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
 
 {% include 'songs/scripts.html' %}
+<script>
+	var lyrics = document.getElementById("lyricsPar").innerHTML;
+	var newLyrics = lyrics.replace(/\n/g, "<br>");
+	document.getElementById("lyricsPar").innerHTML = newLyrics;
+</script>
 
 {% include 'songs/footer.html' %}

@@ -1,10 +1,10 @@
 {% include 'songs/header.html' %}
 {% include 'songs/navbar.html' %}
 
-
+<br>
 <div class="container">
 <div class="row">
-	<div class="card-deck">
+	<div class="card-group">
 		<div class="card">
 			<img id="imgCard" class="card-img-top" src="{{url}}" alt="Card image cap">
 		</div>
@@ -17,9 +17,9 @@
 				<h3>Negative</h3>
 				{% endif %}
 				<p>Using SVM with Audio Features</p>
-				<a href="{% url 'songs:search' %}" class="btn btn-secondary">Search again</a>
+				<a href="{% url 'songs:search' %}" class="btn btn-success">Search again</a>
 			</div>
-			<ul class="list-group list-group-flush">
+			<ul class="list-group list-group-flush ">
 				<li class="list-group-item">
 					<h3>Track Details:</h3>
 					<p>Acousticness: {{acousticness}}</p>
