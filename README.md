@@ -1,6 +1,6 @@
 # ProjectML
 
-Special Problem Topic: Classifiying Musical Valence using Spotify Features as Audio Features
+Special Problem Topic: Classifiying Musical Valence using Song Lyrics and Spotify Audio Features
 
 To start the project, install `pip` and `virtualenv`:
 ```
