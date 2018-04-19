@@ -43,11 +43,13 @@ def run():
 	print('Multinomial Naive Bayes initialized.')
 	print('Performing K-Fold Cross Validation where K = 10')
 	
-
-	# Use K-Fold Cross Validation while using the pipeline as estimator
-	scores = cross_val_score(pipe, data_x, data_y, cv=KFold(n_splits=10, shuffle=True))
-	print("Scores: " + str(scores))
-	print("Mean Score: %.4f" % scores.mean())
+	# Initialize different scoring techniques
+	scoring_list = ["accuracy", "precision_micro", "recall_micro", "f1_micro",
+	 "precision_macro", "recall_macro", "f1_macro"]
+	for scoring in scoring_list:
+		# Use K-Fold Cross Validation while using the pipeline as estimators
+		scores = cross_val_score(pipe, data_x, data_y, cv=KFold(n_splits=10, shuffle=True), scoring=scoring)
+		print("Mean Score for %s: %.4f" % (scoring, scores.mean()))
 
 	# Model persistence; Save current model for future use
 	pipe.fit(data_x, data_y)
