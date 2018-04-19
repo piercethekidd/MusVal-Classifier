@@ -60,6 +60,24 @@
 		
 	</div>
 </div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Search query did not return any result. Please try using other search terms.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% include 'songs/scripts.html' %}
 <script>
@@ -77,6 +95,11 @@ $(document).ready(function(){
 
         	},
         	dataType: 'json',
+        	statusCode: {
+        		500: function() {
+        			$("#exampleModalCenter").modal('show');
+        		}
+        	},
         	success: function(data) {
         		$("#lyricsCard").show();
         		$("#spotifyCard").show();
