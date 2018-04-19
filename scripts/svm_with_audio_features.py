@@ -40,7 +40,7 @@ def run():
 
 	# Combine text features with audio features using scipy sparse matrix
 	x = sp.sparse.hstack((cv.fit_transform(data_x), data_y[['acousticness','danceability',
-		'energy', 'instrumentalness', 'loudness','tempo']].values), format='csr')
+		'energy', 'instrumentalness', 'loudness', 'tempo']].values), format='csr')
 	x = x.todense()
 	y = data_y['valence']
 
