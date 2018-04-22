@@ -12,9 +12,12 @@ from sklearn.pipeline import Pipeline
 from nltk import word_tokenize
 from nltk.stem import SnowballStemmer
 from sklearn.externals import joblib
+import warnings
+
 
 def run():
 
+	warnings.filterwarnings('ignore')
 	# Read data from csv
 	lyric_dataset = pd.read_csv('./res/lyric_dataset.csv', sep=',')
 	feature_dataset = pd.read_csv('./res/feature_dataset.csv', sep=',')
@@ -43,16 +46,14 @@ def run():
 	"""
 	cv = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))
 	x = cv.fit_transform(x)
-	estimators = [('reduce_dim', TruncatedSVD()), 
-	('clf', SVC(C=1, kernel='linear'))]
+	estimators = [ ('clf', SVC(C=1, kernel='linear'))]
 	pipe = Pipeline(estimators)
 
 	# Tune parameters of estimators from pipeline; Uncomment to verify best parameters
 	#tune_parameters(pipe, x, y)
 
 	# Initialize different scoring techniques
-	scoring_list = ["accuracy", "precision_micro", "recall_micro", "f1_micro",
-	 "precision_macro", "recall_macro", "f1_macro"]
+	scoring_list = ["accuracy", "precision_macro", "recall_macro"]
 	for scoring in scoring_list:
 		# Use K-Fold Cross Validation while using the pipeline as estimators
 		scores = cross_val_score(pipe, x, y, cv=KFold(n_splits=10, shuffle=True), scoring=scoring)
@@ -61,7 +62,7 @@ def run():
 	# Model persistence; Save current model for future use
 	pipe.fit(x, y)
 	joblib.dump(pipe, './res/svm_lyrics.pkl')
-	
+
 # Parameter tuning using the pipeline, x, and y as inputs
 def tune_parameters(pipe, x, y):
 	# Dictionary of parameters to be tuned

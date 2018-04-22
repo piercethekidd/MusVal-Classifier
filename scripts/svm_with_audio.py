@@ -54,23 +54,23 @@ def run():
 	#tune_parameters(pipe, x, y)
 
 	# Initialize different scoring techniques
-	scoring_list = ["accuracy", "precision_micro", "recall_micro", "f1_micro",
-	 "precision_macro", "recall_macro", "f1_macro"]
+	scoring_list = ["accuracy", "precision_macro", "recall_macro"]
 	for scoring in scoring_list:
-		# Use K-Fold Cross Validation while using the pipeline as estimators
+		#Use K-Fold Cross Validation while using the pipeline as estimators
 		scores = cross_val_score(pipe, x, y, cv=KFold(n_splits=10, shuffle=True), scoring=scoring)
 		print("Mean Score for %s: %.4f" % (scoring, scores.mean()))
 
 	# Model persistence; Save current model for future use
 	pipe.fit(x, y)
 	joblib.dump(pipe, './res/svm_with_audio_features_pipe.pkl')
-
+	
+	"""
 	# Initialize PCA for plotting with n=2 dimensions
-	#pca = PCA(n_components=2)
-	#plot = pca.fit_transform(x)
+	pca = PCA(n_components=2)
+	plot = pca.fit_transform(x)
 	
 	# Segregate positive and negative valence indexes for plotting
-	"""
+	
 	positive = []
 	negative = []
 	for i in range(len(y)):
@@ -78,14 +78,16 @@ def run():
 			positive.append(i)
 		else:
 			negative.append(i)
-	"""		
+			
 
 	# Plot points with positive and negative valence
-	#plt.scatter(plot[positive,0], plot[positive,1], color='b')
-	#plt.scatter(plot[negative,0], plot[negative,1], color='r')
+	plt.scatter(plot[positive,0], plot[positive,1], color='b')
+	plt.scatter(plot[negative,0], plot[negative,1], color='r')
+	plt.xlabel("Principal Component 1")
+	plt.ylabel("Principal Component 2")
+	plt.savefig('./static/img/graph/valence.png', bbox_inches='tight')
 
-	#plt.show()
-
+	"""
 	
 # Parameter tuning using the pipeline, x, and y as inputs
 def tune_parameters(pipe, x, y):

@@ -31,17 +31,6 @@ def display(request):
 	context = {'song_list': song_list,}
 	return render(request, 'songs/display.html', context)
 
-# Results
-def results(request):
-	return render(request, 'songs/results.html', {})
-
-# Statistics
-def statistics(request):
-	return render(request, 'songs/statistics.html', {})
-
-# Methodology
-def methodology(request):
-	return render(request, 'songs/methodology.html', {})
 
 # Classify Index
 def classify_index(request):
