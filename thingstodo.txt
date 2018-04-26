@@ -1,7 +1,5 @@
 Classifying Musical Valence Using Spotify Audio Features and Lyrics
 
-Edited April 16, 2018
+Edited April 27, 2018
 
-- Get track-details from search
-- User-Interface Support and plot data with MNB and SVM using matplotlib
-- Special Topic Paper (Results and Discussion + Conclusion + Future Works)
+- Make search view dynamic
