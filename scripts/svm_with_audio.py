@@ -47,7 +47,9 @@ def run():
 
 	# Use PCA dimensionality reduction method to reduce number of features and initialize SVM
 	# Use pipelining in Scikit-learn
-	estimators = [('reduce_dim', PCA(n_components=10)), ('clf', SVC(C=1, kernel='linear'))]
+	estimators = [
+	('reduce_dim', PCA(n_components=10)), 
+	('clf', SVC(C=1, kernel='linear'))]
 	pipe = Pipeline(estimators)
 
 	# Tune parameters of estimators from pipeline; Uncomment to verify best parameters
