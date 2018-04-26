@@ -42,3 +42,5 @@ python manage.py migrate
 ```
 
 Use `python manage.py runscript <script_name>` for running scripts in the 'scripts' directory and `python manage.py runserver` to run the server.
+
+For more information about this study, check out `sp_paper.pdf` and `sp_presentation.pdf`.
