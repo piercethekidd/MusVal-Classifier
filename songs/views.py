@@ -1,19 +1,16 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
-from songs.models import Song
-from sklearn.externals import joblib
+from django.shortcuts import render
 from django.http import JsonResponse
+from sklearn.externals import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from songs.models import Song
 from nltk.stem import SnowballStemmer
 from scripts.fit import fit
-import lyricsgenius as genius
-import spotipy
 import spotipy.util as util
+import lyricsgenius as genius
 import pandas as pd
 import scipy as sp
-import numpy as np
+import spotipy
 
 
 
@@ -41,14 +38,14 @@ def classify(request):
 
 	vectorizer = TfidfVectorizer(min_df=1, stop_words='english', lowercase=True, analyzer=Stem(), ngram_range=(1,2))
 	vectorizer = fit(vectorizer)
-	
+
 	classifier = request.POST.get('classifier')
 	lyrics = request.POST.get('lyrics')
 	if classifier == "Multinomial Naive Bayes":
 		clf = joblib.load('./res/mnb.pkl')
 	else:
 		clf = joblib.load('./res/svm_lyrics.pkl')
-	
+
 	lyrics_list = []
 	lyrics_list.append(lyrics)
 	x = vectorizer.transform(lyrics_list)
@@ -72,7 +69,7 @@ def ajax_search(request):
 	# Setup auth tokens for GENIUS and SPOTIFY API
 	scope = 'user-library-read'
 	username = '12183890197'
-	token = util.prompt_for_user_token(username, scope, client_id="b226f2bec10e4127a60ec75e26562562", 
+	token = util.prompt_for_user_token(username, scope, client_id="b226f2bec10e4127a60ec75e26562562",
 		client_secret="4a5041b096554a9e896ffbf83a214008", redirect_uri="https://example.com/callback/")
 	spotify = spotipy.Spotify(auth=token)
 
@@ -107,7 +104,7 @@ def svm(request):
 	# Setup auth tokens for GENIUS and SPOTIFY API
 	scope = 'user-library-read'
 	username = '12183890197'
-	token = util.prompt_for_user_token(username, scope, client_id="b226f2bec10e4127a60ec75e26562562", 
+	token = util.prompt_for_user_token(username, scope, client_id="b226f2bec10e4127a60ec75e26562562",
 		client_secret="4a5041b096554a9e896ffbf83a214008", redirect_uri="https://example.com/callback/")
 	spotify = spotipy.Spotify(auth=token)
 
@@ -127,7 +124,7 @@ def svm(request):
 	artist = track['artists'][0]['name']
 	title = track['name']
 	url = track['album']['images'][0]['url']
-	
+
 	dic = {
 		'acousticness': [acousticness],
 		'danceability': [danceability],
@@ -176,4 +173,4 @@ class Stem(object):
 		self.analyzer = CountVectorizer(min_df=1, stop_words='english', lowercase=True).build_analyzer()
 
 	def __call__(self, doc):
-		return [self.stemmer.stem(t) for t in self.analyzer(doc)]	
+		return [self.stemmer.stem(t) for t in self.analyzer(doc)]
